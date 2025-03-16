@@ -28,8 +28,8 @@ CHANNEL_LINK = os.getenv("CHANNEL_LINK")
 DEVELOPER_LINK = os.getenv("DEVELOPER_LINK")
 SUPPORT_LINK = os.getenv("SUPPORT_LINK")
 
-# For Koyeb/render sleep mode 
-PING_MODE = bool(os.getenv("PING_MODE", True)) # make it True if deploying on koyeb/render else False
+# For Koyeb/render 
+WEB_SERVER = bool(os.getenv("WEB_SERVER", True)) # make it True if deploying on koyeb/render else False
 PING_URL = os.getenv("PING_URL") # add your koyeb/render's public url
 PING_TIME = int(os.getenv("PING_TIME")) # Add time_out in seconds
 
