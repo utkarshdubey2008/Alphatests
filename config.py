@@ -30,7 +30,7 @@ SUPPORT_LINK = os.getenv("SUPPORT_LINK")
 
 # For Koyeb/render sleep mode 
 PING_MODE = bool(os.getenv("PING_MODE", True)) # make it True if deploying on koyeb/render else False
-PING_URL = os.getenv("URL") # add your koyeb/render's public url
+PING_URL = os.getenv("PING_URL") # add your koyeb/render's public url
 PING_TIME = int(os.getenv("PING_TIME")) # Add time_out in seconds
 
 # Admin IDs - Convert space-separated string to list of integers
