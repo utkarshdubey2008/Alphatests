@@ -1,7 +1,7 @@
 import asyncio
 from aiohttp import web, ClientSession, ClientTimeout
 
-async def start_webserver(bot):
+async def start_webserver():
     routes = web.RouteTableDef()
 
     @routes.get("/", allow_head=True)
@@ -19,7 +19,7 @@ async def start_webserver(bot):
     app = web.AppRunner(await web_server())
     await app.setup()
     await web.TCPSite(app, "0.0.0.0", 8080).start()
-    bot.logger.info("Web server started")
+    print("Web server started")
 
 async def ping_server(url, sleep_time):
     while True:
