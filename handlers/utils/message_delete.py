@@ -16,7 +16,6 @@ async def schedule_message_deletion(client: Client, file_uuid: str, chat_id: int
                 "• If you need the file again, you can request it using the same link\n"
                 "• Save important files to your saved messages before they're deleted\n"
                 "• This helps us maintain a fair and legal file-sharing environment"
-              A Open Source Repo By @Thealphabotz
             )
         )
         for msg_id in message_ids:
