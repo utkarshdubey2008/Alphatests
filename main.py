@@ -1,19 +1,11 @@
 #AlphaShare bot join @Thealphabotz
 from pyrogram import Client, idle
-from flask import Flask, jsonify
-from keepalive import ping_server
+from web import start_webserver, ping_server
 from database import Database
 import config
 import asyncio
 import os
-import threading
 import time
-
-app = Flask(__name__)
-
-@app.route('/health', methods=['GET'])
-def health_check():
-    return jsonify({"status": "healthy"}), 200
 
 
 class FileShareBot(Client):
@@ -35,8 +27,7 @@ class FileShareBot(Client):
         print(f"Username: @{me.username}")
         print("----------------")
 
-        if config.PING_MODE:
-            await ping_server(config.PING_URL, config.PING_TIME)
+       
 
     async def stop(self):
         await super().stop()
@@ -49,6 +40,10 @@ async def main():
         print("Starting Bot...")
         await bot.start()
         print("Bot is Running!")
+        if WEB_SERVER:
+            asyncio.create_task(start_webserver())
+            asyncio.create_task(ping_server(config.PING_URL, config.PING_TIME))
+            
         await idle()
     except Exception as e:
         print(f"ERROR: {str(e)}")
@@ -56,22 +51,12 @@ async def main():
         await bot.stop()
         print("Bot Stopped!")
 
-def run_flask():
-    app.run(host='0.0.0.0', port=8080)
-
-def keep_alive():
-    while True:
-        print("Keeping bot alive...")
-        time.sleep(300)  
 
 if __name__ == "__main__":
     try:
         
         if os.name == 'nt':
             asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
-        
-        threading.Thread(target=run_flask).start()
-        threading.Thread(target=keep_alive).start()
         loop = asyncio.get_event_loop()
         loop.run_until_complete(main())
     except KeyboardInterrupt:
