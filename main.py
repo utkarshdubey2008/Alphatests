@@ -40,7 +40,7 @@ async def main():
         print("Starting Bot...")
         await bot.start()
         print("Bot is Running!")
-        if WEB_SERVER:
+        if config.WEB_SERVER:
             asyncio.create_task(start_webserver())
             asyncio.create_task(ping_server(config.PING_URL, config.PING_TIME))
             
