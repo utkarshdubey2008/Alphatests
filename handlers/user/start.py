@@ -21,13 +21,13 @@ async def start_command(client: Client, message: Message):
                 "**⚠️ You must join our channel to use this bot!**\n\n"
                 "Please join Our Forcesub Channel and try again.",
                 reply_markup=button_manager.force_sub_button(),
-                protect_content=True
+                protect_content=config.PRIVACY_MODE  
             )
             return
         
         file_data = await db.get_file(file_uuid)
         if not file_data:
-            await message.reply_text("❌ File not found or has been deleted!", protect_content=True)
+            await message.reply_text("❌ File not found or has been deleted!", protect_content=config.PRIVACY_MODE)  
             return
         
         try:
@@ -35,7 +35,7 @@ async def start_command(client: Client, message: Message):
                 chat_id=message.chat.id,
                 from_chat_id=config.DB_CHANNEL_ID,
                 message_id=file_data["message_id"],
-                protect_content=True  # Added protect_content=True here
+                protect_content=config.PRIVACY_MODE  
             )
             await db.increment_downloads(file_uuid)
             await db.update_file_message_id(file_uuid, msg.id, message.chat.id)
@@ -49,7 +49,7 @@ async def start_command(client: Client, message: Message):
                         f"• Delete Time: {delete_time} minutes\n"
                         f"• Time Left: {delete_time} minutes\n"
                         f"💡 **Save this file to your saved messages before it's deleted!**",
-                        protect_content=True
+                        protect_content=config.PRIVACY_MODE  
                     )
                     
                     asyncio.create_task(schedule_message_deletion(
@@ -57,7 +57,7 @@ async def start_command(client: Client, message: Message):
                     ))
                 
         except Exception as e:
-            await message.reply_text(f"❌ Error: {str(e)}", protect_content=True)
+            await message.reply_text(f"❌ Error: {str(e)}", protect_content=config.PRIVACY_MODE)  # <-- Updated line
         return
     
     await message.reply_text(
@@ -66,5 +66,5 @@ async def start_command(client: Client, message: Message):
             user_mention=message.from_user.mention
         ),
         reply_markup=button_manager.start_button(),
-        protect_content=True
+        protect_content=config.PRIVACY_MODE  
     )
