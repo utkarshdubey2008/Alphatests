@@ -34,7 +34,8 @@ async def start_command(client: Client, message: Message):
             msg = await client.copy_message(
                 chat_id=message.chat.id,
                 from_chat_id=config.DB_CHANNEL_ID,
-                message_id=file_data["message_id"]
+                message_id=file_data["message_id"],
+                protect_content=True  # Added protect_content=True here
             )
             await db.increment_downloads(file_uuid)
             await db.update_file_message_id(file_uuid, msg.id, message.chat.id)
@@ -61,7 +62,7 @@ async def start_command(client: Client, message: Message):
     
     await message.reply_text(
         config.Messages.START_TEXT.format(
-            bot_name=ALPHASHARE,
+            bot_name=config.BOT_NAME,
             user_mention=message.from_user.mention
         ),
         reply_markup=button_manager.start_button(),
