@@ -20,13 +20,14 @@ async def start_command(client: Client, message: Message):
             await message.reply_text(
                 "**⚠️ You must join our channel to use this bot!**\n\n"
                 "Please join Our Forcesub Channel and try again.",
-                reply_markup=button_manager.force_sub_button()
+                reply_markup=button_manager.force_sub_button(),
+                protect_content=True
             )
             return
         
         file_data = await db.get_file(file_uuid)
         if not file_data:
-            await message.reply_text("❌ File not found or has been deleted!")
+            await message.reply_text("❌ File not found or has been deleted!", protect_content=True)
             return
         
         try:
@@ -46,7 +47,8 @@ async def start_command(client: Client, message: Message):
                         f"This file will be automatically deleted in {delete_time} minutes\n"
                         f"• Delete Time: {delete_time} minutes\n"
                         f"• Time Left: {delete_time} minutes\n"
-                        f"💡 **Save this file to your saved messages before it's deleted!**"
+                        f"💡 **Save this file to your saved messages before it's deleted!**",
+                        protect_content=True
                     )
                     
                     asyncio.create_task(schedule_message_deletion(
@@ -54,13 +56,14 @@ async def start_command(client: Client, message: Message):
                     ))
                 
         except Exception as e:
-            await message.reply_text(f"❌ Error: {str(e)}")
+            await message.reply_text(f"❌ Error: {str(e)}", protect_content=True)
         return
     
     await message.reply_text(
         config.Messages.START_TEXT.format(
-            bot_name=config.BOT_NAME,
+            bot_name=ALPHASHARE,
             user_mention=message.from_user.mention
         ),
-        reply_markup=button_manager.start_button()
+        reply_markup=button_manager.start_button(),
+        protect_content=True
     )
