@@ -21,7 +21,9 @@ FORCE_SUB_CHANNEL = int(os.getenv("FORCE_SUB_CHANNEL"))
 # Bot Information
 BOT_USERNAME = os.getenv("BOT_USERNAME")
 BOT_NAME = os.getenv("BOT_NAME")
-BOT_VERSION = "1.2"
+BOT_VERSION = "1.3"
+# Privacy Mode Configuration
+PRIVACY_MODE = os.getenv("PRIVACY_MODE", "off").lower() == "on"
 
 # Your Modiji Url Api Key Here
 MODIJI_API_KEY = os.getenv("MODIJI_API_KEY")
