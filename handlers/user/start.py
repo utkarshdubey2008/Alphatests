@@ -57,7 +57,7 @@ async def start_command(client: Client, message: Message):
                     ))
                 
         except Exception as e:
-            await message.reply_text(f"❌ Error: {str(e)}", protect_content=config.PRIVACY_MODE)  # <-- Updated line
+            await message.reply_text(f"❌ Error: {str(e)}", protect_content=config.PRIVACY_MODE)  
         return
     
     await message.reply_text(
