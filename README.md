@@ -1,7 +1,7 @@
 <h1 align="center">
   <b>Alpha Share Bot</b>
 </h1>
-
+ 
 <p align="center">
   <a href="https://github.com/utkarshdubey2008/AlphaShare">
     <img src="https://envs.sh/SlS.jpg" alt="Alpha Share Bot" width="500">
