@@ -131,15 +131,8 @@ Use /help to see available commands!
 • Auto-Delete Feature:
 Files are automatically deleted after the set time.
 Use /auto_del to change the deletion time.
-
-📝 **Supported File Types:**
-• Documents (PDF, DOC, XLS, etc.)
-• Videos (MP4, MKV, AVI, etc.)
-• Audio (MP3, M4A, WAV, etc.)
-• Images (JPG, PNG, GIF, etc.)
-• Archives (ZIP, RAR, 7Z, etc.)
-• Applications (APK, EXE, etc.)
-• Other Formats
+• /short - to shorten any url in modiji 
+usage :- /short example.com
 
 An Open Source Repo :- github.com/utkarshdubey2008/alphashare
 
