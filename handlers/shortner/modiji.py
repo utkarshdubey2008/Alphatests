@@ -14,7 +14,7 @@ if not hasattr(config, 'MODIJI_API_KEY'):
 # API endpoint
 MODIJI_API_URL = "https://api.modijiurl.com/api"
 
-@Client.on_message(filters.command("short") & filters.user(config.ADMIN_IDS))  # Updated to use config.ADMIN_IDS
+@Client.on_message(filters.command("short") & filters.user(config.ADMIN_IDS))  
 async def short_url_command(client, message):
     """
     Command: /short {url}
@@ -34,7 +34,7 @@ async def short_url_command(client, message):
 
         url = command[1]
         
-        # Send initial processing message
+        
         status_msg = await message.reply_text(
             "🔄 **Processing your URL...**",
             quote=True
@@ -42,15 +42,15 @@ async def short_url_command(client, message):
 
         # API request parameters
         params = {
-            'api': config.MODIJI_API_KEY,  # Updated to use config.MODIJI_API_KEY
+            'api': config.MODIJI_API_KEY,  
             'url': url,
             'format': 'json'
         }
         
-        # Add slight delay for animation effect (2 seconds)
+        
         time.sleep(2)
         
-        # Make API request
+        
         response = requests.get(MODIJI_API_URL, params=params)
         response.raise_for_status()
         
@@ -58,12 +58,12 @@ async def short_url_command(client, message):
         
         if data.get('status') == 'success':
             shortened_url = data.get('shortenedUrl')
-            # Update message with success response
+            
             await status_msg.edit_text(
                 f"✅ **URL Shortened Successfully!**\n\n"
                 f"**Original URL:**\n`{url}`\n\n"
                 f"**Shortened URL:**\n`{shortened_url}`\n\n"
-                f"_Powered by ModijiURL_"
+                f"Powered by @Thealphabotz"
             )
         else:
             await status_msg.edit_text(
