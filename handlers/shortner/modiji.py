@@ -3,7 +3,7 @@ import requests
 import time
 from rich.console import Console
 from rich.panel import Panel
-from config import MODIJI_API_KEY, ADMIN_IDS
+import config  # Added import for config
 
 console = Console()
 
@@ -14,7 +14,7 @@ if not hasattr(config, 'MODIJI_API_KEY'):
 # API endpoint
 MODIJI_API_URL = "https://api.modijiurl.com/api"
 
-@Client.on_message(filters.command("short") & filters.user(ADMIN_IDS))
+@Client.on_message(filters.command("short") & filters.user(config.ADMIN_IDS))  # Updated to use config.ADMIN_IDS
 async def short_url_command(client, message):
     """
     Command: /short {url}
@@ -42,7 +42,7 @@ async def short_url_command(client, message):
 
         # API request parameters
         params = {
-            'api': MODIJI_API_KEY,
+            'api': config.MODIJI_API_KEY,  # Updated to use config.MODIJI_API_KEY
             'url': url,
             'format': 'json'
         }
@@ -85,4 +85,4 @@ async def short_url_command(client, message):
     except Exception as e:
         await status_msg.edit_text(
             f"❌ **An unexpected error occurred:**\n`{str(e)}`"
-      )
+        )
