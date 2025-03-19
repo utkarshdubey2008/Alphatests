@@ -32,7 +32,8 @@
   </a>
 </p>
 
-## 🌟 Features
+<details>
+<summary><b>🌟 Features</b></summary>
 
 - **Admin-Only Uploads**: Authorized admins can securely upload files with multi-admin support.
 - **Universal File Support**: Supports images, videos, documents, audio files, and all Telegram-supported files.
@@ -45,8 +46,13 @@
   - **Usage**: /auto_del 2 → Sets auto-delete timer to 2 minutes.
 - **Cleaner UI**: Smoother and more user-friendly experience.
 - **Bot Keep-Alive Mechanism**: Ensures 24/7 uptime for a seamless experience on Koyeb.
+- **URL Shortening**: Shorten any link using the `/short` command with Modiji URL API.
+- **Privacy Mode**: Protects files by preventing users from forwarding or copying them.
 
-## 🛠️ Installation
+</details>
+
+<details>
+<summary><b>🛠️ Installation</b></summary>
 
 ### Local Deployment
 
@@ -92,9 +98,13 @@ API_HASH - Get from my.telegram.org
 MONGO_URI - Your MongoDB connection string
 DB_CHANNEL_ID - Channel ID for file storage
 ADMIN_IDS - List of admin user IDs
+MODIJI_API_KEY - Your Modiji URL API key
 ```
 
-## 📚 Commands
+</details>
+
+<details>
+<summary><b>📚 Commands</b></summary>
 
 ### User Commands
 
@@ -102,6 +112,7 @@ ADMIN_IDS - List of admin user IDs
 /start - Start the bot
 /help - Show help message
 /about - About the bot
+/short - Shorten a URL using Modiji URL API
 ```
 
 ### Admin Commands
@@ -115,7 +126,10 @@ ADMIN_IDS - List of admin user IDs
 /auto_del - Set auto-delete timer
 ```
 
-## Supported Types, Extensions, and MIME Types
+</details>
+
+<details>
+<summary><b>Supported Types, Extensions, and MIME Types</b></summary>
 
 ### Supported Types
 
@@ -147,7 +161,10 @@ SUPPORTED_MIME_TYPES = [
 ]
 ```
 
-## 📦 Tech Stack
+</details>
+
+<details>
+<summary><b>📦 Tech Stack</b></summary>
 
 - **Python** - Programming Language
 - **Pyrogram** - Telegram MTProto API Framework
@@ -155,7 +172,10 @@ SUPPORTED_MIME_TYPES = [
 - **Motor** - Async MongoDB Driver
 - **aiofiles** - Async File Operations
 
-## 📋 Dependencies
+</details>
+
+<details>
+<summary><b>📋 Dependencies</b></summary>
 
 - `pyrogram==2.0.106`
 - `tgcrypto==1.2.5`
@@ -167,7 +187,10 @@ SUPPORTED_MIME_TYPES = [
 - `pytz==2023.3`
 - `pymongo==4.5.0`
 
-## 🤝 Contributing
+</details>
+
+<details>
+<summary><b>🤝 Contributing</b></summary>
 
 Contributions are welcome! Please submit a Pull Request.
 
@@ -177,23 +200,43 @@ Contributions are welcome! Please submit a Pull Request.
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📜 License
+</details>
+
+<details>
+<summary><b>📜 License</b></summary>
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 📞 Support
+</details>
+
+<details>
+<summary><b>📞 Support</b></summary>
 
 - Channel: [@Thealphabotz](https://t.me/Thealphabotz)
 - Developer: [@adarsh2626](https://t.me/adarsh2626)
 
-## 🙏 Credits
+</details>
+
+<details>
+<summary><b>🙏 Credits</b></summary>
 
 - [Pyrogram](https://github.com/pyrogram/pyrogram)
 - [Adarsh](https://t.me/adarsh2626)
 - [All Contributors](https://github.com/utkarshdubey2008/AlphaShare/graphs/contributors)
 
+</details>
+
+<details>
+<summary><b>Contributors</b></summary>
+
+- @trashxrd [Telegram](https://t.me/trashxrd)
+- @nxghtz [Telegram](https://t.me/nxghtz)
+- @Mak0912 [Telegram](https://t.me/Mak0912)
+
+</details>
+
 <p align="center">
-  <b>Last Updated: 2025-03-10 19:04:48 UTC</b>
+  <b>Last Updated: 2025-03-19 16:42:54 UTC</b>
   <br>
   <i>Made with ❤️ by <a href="https://t.me/adarsh2626">Adarsh</a></i>
 </p>
