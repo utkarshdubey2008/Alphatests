@@ -20,6 +20,7 @@ async def help_command(client: Client, message: Message):
         "• /broadcast - Broadcast message to users\n\n"
         "💡 **Auto-Delete Feature:**\n"
         "Files are automatically deleted after the set time.\n"
-        "Use /auto_del to change the deletion time."
+        "Use /auto_del to change the deletion time. 
+        • /short - to shorten any url in modiji,usage :- /short example.com"
     )
     await message.reply_text(help_text, reply_markup=button_manager.help_button())
