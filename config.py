@@ -23,6 +23,11 @@ BOT_USERNAME = os.getenv("BOT_USERNAME")
 BOT_NAME = os.getenv("BOT_NAME")
 BOT_VERSION = "1.2"
 
+# Your Modiji Url Api Key Here
+MODIJI_API_KEY = os.getenv("MODIJI_API_KEY")
+if not MODIJI_API_KEY:
+    print("⚠️ Warning: MODIJI_API_KEY not set in environment variables")
+
 # Links
 CHANNEL_LINK = os.getenv("CHANNEL_LINK")
 DEVELOPER_LINK = os.getenv("DEVELOPER_LINK")
