@@ -21,7 +21,14 @@ FORCE_SUB_CHANNEL = int(os.getenv("FORCE_SUB_CHANNEL"))
 # Bot Information
 BOT_USERNAME = os.getenv("BOT_USERNAME")
 BOT_NAME = os.getenv("BOT_NAME")
-BOT_VERSION = "1.2"
+BOT_VERSION = "1.3"
+# Privacy Mode Configuration
+PRIVACY_MODE = os.getenv("PRIVACY_MODE", "off").lower() == "on"
+
+# Your Modiji Url Api Key Here
+MODIJI_API_KEY = os.getenv("MODIJI_API_KEY")
+if not MODIJI_API_KEY:
+    print("⚠️ Warning: MODIJI_API_KEY not set in environment variables")
 
 # Links
 CHANNEL_LINK = os.getenv("CHANNEL_LINK")
@@ -124,15 +131,8 @@ Use /help to see available commands!
 • Auto-Delete Feature:
 Files are automatically deleted after the set time.
 Use /auto_del to change the deletion time.
-
-📝 **Supported File Types:**
-• Documents (PDF, DOC, XLS, etc.)
-• Videos (MP4, MKV, AVI, etc.)
-• Audio (MP3, M4A, WAV, etc.)
-• Images (JPG, PNG, GIF, etc.)
-• Archives (ZIP, RAR, 7Z, etc.)
-• Applications (APK, EXE, etc.)
-• Other Formats
+• /short - to shorten any url in modiji 
+usage :- /short example.com
 
 An Open Source Repo :- github.com/utkarshdubey2008/alphashare
 
