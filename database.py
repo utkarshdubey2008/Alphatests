@@ -1,146 +1,273 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 from datetime import datetime
 import config
-from typing import Dict, Any, Optional, List
+import pytz
+from typing import List, Dict, Optional, Union
+import logging
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 class Database:
     def __init__(self):
-        self.client = AsyncIOMotorClient(config.MONGO_URI)
-        self.db = self.client[config.DATABASE_NAME]
-        self.files = self.db.files
-        self.users = self.db.users
-        print("Database Connected Successfully!")
+        try:
+            self.client = AsyncIOMotorClient(config.MONGO_URI)
+            self.db = self.client[config.DATABASE_NAME]
+            self.files_collection = self.db.files
+            self.users_collection = self.db.users
+            self.batch_collection = self.db.batches
+            logger.info("Database connection established successfully")
+        except Exception as e:
+            logger.error(f"Database connection failed: {str(e)}")
+            raise
 
-    async def add_file(self, file_data: Dict[str, Any]) -> str:
-        file_doc = {
-            "file_id": file_data["file_id"],
-            "file_name": file_data["file_name"],
-            "file_size": file_data["file_size"],
-            "file_type": file_data["file_type"],
-            "uuid": file_data["uuid"],
-            "uploader_id": file_data["uploader_id"],
-            "message_id": file_data["message_id"],
-            "downloads": 0,
-            "auto_delete": file_data.get("auto_delete", False),
-            "auto_delete_time": file_data.get("auto_delete_time", None),
-            "uploaded_at": datetime.utcnow()
-        }
-        await self.files.insert_one(file_doc)
-        return file_doc["uuid"]
-
-    async def get_file(self, uuid: str) -> Optional[Dict[str, Any]]:
-        return await self.files.find_one({"uuid": uuid})
-
-    async def increment_downloads(self, uuid: str) -> None:
-        await self.files.update_one(
-            {"uuid": uuid},
-            {
-                "$inc": {"downloads": 1},
-                "$set": {"last_download": datetime.utcnow()}
-            }
-        )
-
-    async def set_file_autodelete(self, uuid: str, delete_time: int) -> bool:
-        """Set auto-delete time for a file in minutes"""
-        result = await self.files.update_one(
-            {"uuid": uuid},
-            {
-                "$set": {
-                    "auto_delete": True,
-                    "auto_delete_time": delete_time,
-                    "delete_at": datetime.utcnow()
-                }
-            }
-        )
-        return result.modified_count > 0
-
-    async def get_autodelete_files(self) -> List[Dict[str, Any]]:
-        """Get all files that have auto-delete enabled"""
-        return await self.files.find({"auto_delete": True}).to_list(None)
-
-    async def update_file_message_id(self, uuid: str, message_id: int, chat_id: int) -> None:
-        """Update message ID and chat ID for a file after sending to user"""
-        await self.files.update_one(
-            {"uuid": uuid},
-            {
-                "$push": {
-                    "active_messages": {
-                        "chat_id": chat_id,
-                        "message_id": message_id,
-                        "sent_at": datetime.utcnow()
-                    }
-                }
-            }
-        )
-
-    async def remove_file_message(self, uuid: str, chat_id: int, message_id: int) -> None:
-        """Remove a message reference from active_messages without deleting the file"""
-        await self.files.update_one(
-            {"uuid": uuid},
-            {
-                "$pull": {
-                    "active_messages": {
-                        "chat_id": chat_id,
-                        "message_id": message_id
-                    }
-                }
-            }
-        )
-
-    async def get_stats(self) -> Dict[str, Any]:
-        total_files = await self.files.count_documents({})
-        total_users = await self.users.count_documents({})
-
-        total_size = 0
-        total_downloads = 0
-
-        async for file in self.files.find({}):
-            total_size += file.get("file_size", 0)
-            total_downloads += file.get("downloads", 0)
-
-        return {
-            "total_files": total_files,
-            "total_users": total_users,
-            "total_size": total_size,
-            "total_downloads": total_downloads,
-            "active_autodelete_files": await self.files.count_documents({"auto_delete": True})
-        }
-
-    async def add_user(self, user_id: int, username: str = None) -> None:
-        await self.users.update_one(
-            {"user_id": user_id},
-            {
-                "$set": {
+    # User Management Methods
+    async def add_user(self, user_id: int, username: str = None, first_name: str = None) -> bool:
+        try:
+            if not await self.users_collection.find_one({"user_id": user_id}):
+                user_data = {
+                    "user_id": user_id,
                     "username": username,
-                    "joined_date": datetime.utcnow(),
-                    "last_active": datetime.utcnow()
+                    "first_name": first_name,
+                    "join_date": datetime.now(pytz.UTC),
+                    "is_banned": False,
+                    "total_files": 0,
+                    "total_downloads": 0
                 }
-            },
-            upsert=True
-        )
+                await self.users_collection.insert_one(user_data)
+                logger.info(f"New user added: {user_id}")
+                return True
+            return False
+        except Exception as e:
+            logger.error(f"Error adding user: {str(e)}")
+            return False
 
-    async def get_all_users(self) -> List[Dict[str, Any]]:
-        return await self.users.find({}).to_list(None)
+    async def remove_user(self, user_id: int) -> bool:
+        try:
+            result = await self.users_collection.delete_one({"user_id": user_id})
+            return result.deleted_count > 0
+        except Exception as e:
+            logger.error(f"Error removing user: {str(e)}")
+            return False
 
-    async def get_file_messages(self, uuid: str) -> List[Dict[str, Any]]:
-        """Get all active messages for a file"""
-        file = await self.get_file(uuid)
-        if file:
-            return file.get("active_messages", [])
-        return []
+    async def ban_user(self, user_id: int) -> bool:
+        try:
+            result = await self.users_collection.update_one(
+                {"user_id": user_id},
+                {"$set": {"is_banned": True}}
+            )
+            return result.modified_count > 0
+        except Exception as e:
+            logger.error(f"Error banning user: {str(e)}")
+            return False
 
-    async def check_autodelete_status(self, uuid: str) -> Optional[Dict[str, Any]]:
-        """Check if a file should be auto-deleted from user chats"""
-        file = await self.get_file(uuid)
-        if file and file.get("auto_delete"):
-            delete_time = file.get("auto_delete_time", 0)
-            sent_time = file.get("delete_at")
-            if sent_time:
-                time_diff = (datetime.utcnow() - sent_time).total_seconds() / 60
-                if time_diff >= delete_time:
-                    return {
-                        "should_delete": True,
-                        "messages": file.get("active_messages", [])
-                    }
-        return None
+    async def unban_user(self, user_id: int) -> bool:
+        try:
+            result = await self.users_collection.update_one(
+                {"user_id": user_id},
+                {"$set": {"is_banned": False}}
+            )
+            return result.modified_count > 0
+        except Exception as e:
+            logger.error(f"Error unbanning user: {str(e)}")
+            return False
+
+    async def is_user_banned(self, user_id: int) -> bool:
+        try:
+            user = await self.users_collection.find_one({"user_id": user_id})
+            return user.get("is_banned", False) if user else False
+        except Exception as e:
+            logger.error(f"Error checking user ban status: {str(e)}")
+            return False
+
+    # File Management Methods
+    async def add_file(self, file_data: dict) -> str:
+        try:
+            file_data.update({
+                "upload_time": datetime.now(pytz.UTC),
+                "downloads": 0,
+                "last_accessed": datetime.now(pytz.UTC)
+            })
+            await self.files_collection.insert_one(file_data)
+            await self.users_collection.update_one(
+                {"user_id": file_data["uploader_id"]},
+                {"$inc": {"total_files": 1}}
+            )
+            logger.info(f"New file added: {file_data['uuid']}")
+            return file_data["uuid"]
+        except Exception as e:
+            logger.error(f"Error adding file: {str(e)}")
+            raise
+
+    async def get_file(self, file_uuid: str) -> Optional[dict]:
+        try:
+            file_data = await self.files_collection.find_one({"uuid": file_uuid})
+            if file_data:
+                await self.files_collection.update_one(
+                    {"uuid": file_uuid},
+                    {"$set": {"last_accessed": datetime.now(pytz.UTC)}}
+                )
+            return file_data
+        except Exception as e:
+            logger.error(f"Error getting file: {str(e)}")
+            return None
+
+    async def delete_file(self, file_uuid: str) -> bool:
+        try:
+            file_data = await self.get_file(file_uuid)
+            if file_data:
+                result = await self.files_collection.delete_one({"uuid": file_uuid})
+                if result.deleted_count > 0:
+                    await self.users_collection.update_one(
+                        {"user_id": file_data["uploader_id"]},
+                        {"$inc": {"total_files": -1}}
+                    )
+                    logger.info(f"File deleted: {file_uuid}")
+                    return True
+            return False
+        except Exception as e:
+            logger.error(f"Error deleting file: {str(e)}")
+            return False
+
+    async def increment_downloads(self, file_uuid: str) -> int:
+        try:
+            result = await self.files_collection.find_one_and_update(
+                {"uuid": file_uuid},
+                {
+                    "$inc": {"downloads": 1},
+                    "$set": {"last_accessed": datetime.now(pytz.UTC)}
+                },
+                return_document=True
+            )
+            if result:
+                await self.users_collection.update_one(
+                    {"user_id": result["uploader_id"]},
+                    {"$inc": {"total_downloads": 1}}
+                )
+                return result["downloads"]
+            return 0
+        except Exception as e:
+            logger.error(f"Error incrementing downloads: {str(e)}")
+            return 0
+
+    # Batch Management Methods
+    async def add_batch(self, batch_data: dict) -> str:
+        try:
+            batch_data.update({
+                "created_at": datetime.now(pytz.UTC),
+                "downloads": 0,
+                "last_accessed": datetime.now(pytz.UTC),
+                "is_active": True
+            })
+            await self.batch_collection.insert_one(batch_data)
+            logger.info(f"New batch created: {batch_data['uuid']}")
+            return batch_data["uuid"]
+        except Exception as e:
+            logger.error(f"Error creating batch: {str(e)}")
+            raise
+
+    async def get_batch(self, batch_uuid: str) -> Optional[dict]:
+        try:
+            batch_data = await self.batch_collection.find_one({
+                "uuid": batch_uuid,
+                "is_active": True
+            })
+            if batch_data:
+                await self.batch_collection.update_one(
+                    {"uuid": batch_uuid},
+                    {"$set": {"last_accessed": datetime.now(pytz.UTC)}}
+                )
+            return batch_data
+        except Exception as e:
+            logger.error(f"Error getting batch: {str(e)}")
+            return None
+
+    async def delete_batch(self, batch_uuid: str) -> bool:
+        try:
+            result = await self.batch_collection.update_one(
+                {"uuid": batch_uuid},
+                {"$set": {"is_active": False}}
+            )
+            success = result.modified_count > 0
+            if success:
+                logger.info(f"Batch deleted: {batch_uuid}")
+            return success
+        except Exception as e:
+            logger.error(f"Error deleting batch: {str(e)}")
+            return False
+
+    async def increment_batch_downloads(self, batch_uuid: str) -> int:
+        try:
+            result = await self.batch_collection.find_one_and_update(
+                {"uuid": batch_uuid},
+                {
+                    "$inc": {"downloads": 1},
+                    "$set": {"last_accessed": datetime.now(pytz.UTC)}
+                },
+                return_document=True
+            )
+            return result["downloads"] if result else 0
+        except Exception as e:
+            logger.error(f"Error incrementing batch downloads: {str(e)}")
+            return 0
+
+    # Statistics Methods
+    async def get_stats(self) -> dict:
+        try:
+            total_users = await self.users_collection.count_documents({})
+            total_files = await self.files_collection.count_documents({})
+            total_batches = await self.batch_collection.count_documents({"is_active": True})
+            
+            downloads_agg = await self.files_collection.aggregate([
+                {"$group": {"_id": None, "total": {"$sum": "$downloads"}}}
+            ]).to_list(1)
+            total_downloads = downloads_agg[0]["total"] if downloads_agg else 0
+            
+            batch_downloads_agg = await self.batch_collection.aggregate([
+                {"$group": {"_id": None, "total": {"$sum": "$downloads"}}}
+            ]).to_list(1)
+            total_batch_downloads = batch_downloads_agg[0]["total"] if batch_downloads_agg else 0
+            
+            return {
+                "total_users": total_users,
+                "total_files": total_files,
+                "total_batches": total_batches,
+                "total_downloads": total_downloads,
+                "total_batch_downloads": total_batch_downloads
+            }
+        except Exception as e:
+            logger.error(f"Error getting stats: {str(e)}")
+            return {
+                "total_users": 0,
+                "total_files": 0,
+                "total_batches": 0,
+                "total_downloads": 0,
+                "total_batch_downloads": 0
+            }
+
+    # Cleanup Methods
+    async def cleanup_old_files(self, days: int = 30) -> int:
+        try:
+            cutoff_date = datetime.now(pytz.UTC) - timedelta(days=days)
+            result = await self.files_collection.delete_many({
+                "last_accessed": {"$lt": cutoff_date}
+            })
+            return result.deleted_count
+        except Exception as e:
+            logger.error(f"Error cleaning up old files: {str(e)}")
+            return 0
+
+    async def cleanup_old_batches(self, days: int = 7) -> int:
+        try:
+            cutoff_date = datetime.now(pytz.UTC) - timedelta(days=days)
+            result = await self.batch_collection.update_many(
+                {
+                    "last_accessed": {"$lt": cutoff_date},
+                    "is_active": True
+                },
+                {"$set": {"is_active": False}}
+            )
+            return result.modified_count
+        except Exception as e:
+            logger.error(f"Error cleaning up old batches: {str(e)}")
+            return 0
