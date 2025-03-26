@@ -21,7 +21,7 @@ FORCE_SUB_CHANNEL = int(os.getenv("FORCE_SUB_CHANNEL"))
 # Bot Information
 BOT_USERNAME = os.getenv("BOT_USERNAME")
 BOT_NAME = os.getenv("BOT_NAME")
-BOT_VERSION = "1.3"
+BOT_VERSION = "1.4"
 # Privacy Mode Configuration
 PRIVACY_MODE = os.getenv("PRIVACY_MODE", "off").lower() == "on"
 
@@ -117,26 +117,32 @@ Use /help to see available commands!
 """
 
     HELP_TEXT = """
-📚 **Available Commands** 
+📚 **Available Commands**  
 
-👤 **User Commands:**
-• /start - Start bot
-• /help - Show this help
-• /about - About bot
+👤 **User Commands:**  
+• `/start` - Start the bot  
+• `/help` - Show this menu  
+• `/about` - Bot details  
+• `/short [url]` - Shorten a link (e.g., `/short example.com`)  
 
-👑 **Admin Commands:**
-• /upload - Upload file (reply to file)
-• /stats - View statistics
-• /broadcast - Send broadcast
-• Auto-Delete Feature:
-Files are automatically deleted after the set time.
-Use /auto_del to change the deletion time.
-• /short - to shorten any url in modiji 
-usage :- /short example.com
+👑 **Admin Commands:**  
+• `/upload` - Upload a file (reply to a file)  
+• `/stats` - View bot statistics  
+• `/broadcast` - Send a message to all users  
+• `/auto_del` - Set auto-delete timer  
 
-An Open Source Repo :- github.com/utkarshdubey2008/alphashare
+🗑 **Auto-Delete System:**  
+• Files auto-delete after a set time.  
+• Modify timer using `/auto_del`.  
 
-⚠️ For support: @adarsh2626
+🔗 **Batch System:**  
+• `/batch` - Group multiple files into one link.  
+• Forward files & reply with `/batch`.  
+
+🛠 **Open Source:**  
+🔗 [GitHub](https://github.com/utkarshdubey2008/alphashare)  
+
+⚠️ **Need Help?** Contact [@adarsh2626](https://t.me/adarsh2626)  
 """
 
     ABOUT_TEXT = """
