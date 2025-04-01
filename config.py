@@ -26,7 +26,7 @@ CHANNEL_LINK_2 = os.getenv("CHANNEL_LINK_2", "") # Second channel link
 # Bot Information
 BOT_USERNAME = os.getenv("BOT_USERNAME")
 BOT_NAME = os.getenv("BOT_NAME")
-BOT_VERSION = "1.4"
+BOT_VERSION = "1.5"
 # Privacy Mode Configuration
 PRIVACY_MODE = os.getenv("PRIVACY_MODE", "off").lower() == "on"
 
