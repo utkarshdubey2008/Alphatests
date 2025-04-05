@@ -2,7 +2,7 @@ from pyrogram import Client, filters
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 
 @Client.on_message(filters.command("repo"))
-async def repo_command(client: Client, message: Message):
+async def rep_command(client: Client, message: Message):
     text = (
         "**🚀 AlphaShare - Open Source File Sharing Bot**\n\n"
         "This is the most popular Telegram file sharing bot with multiple features.\n"
