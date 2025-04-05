@@ -89,6 +89,11 @@
       "description": "Set to 'on' for restricting users to copy or forward the content",
       "value": "off",
       "required": false
+    },
+    "AUTO_DELETE_TIME": {
+      "description": "Time (in minutes) after which a file will be automatically deleted after being accessed",
+      "value": "30",
+      "required": true
     }
   }
 }
