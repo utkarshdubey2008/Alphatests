@@ -15,7 +15,7 @@ MONGO_URI = os.getenv("MONGO_URI")
 DATABASE_NAME = os.getenv("DATABASE_NAME")
 
 # Channel Configuration 
-DB_CHANNEL_ID = int(os.getenv("DB_CHANNEL_ID"))
+DB_CHANNEL_ID = int(os.getenv("DB_CHANNEL_ID")) # if you want to retrieve the database and links of codex botz then fill same database id of codex
 FORCE_SUB_CHANNEL = int(os.getenv("FORCE_SUB_CHANNEL")) # First force sub channel
 FORCE_SUB_CHANNEL_2 = int(os.getenv("FORCE_SUB_CHANNEL_2", 0)) # Second force sub channel, defaults to 0 if not set
 
@@ -26,9 +26,11 @@ CHANNEL_LINK_2 = os.getenv("CHANNEL_LINK_2", "") # Second channel link
 # Bot Information
 BOT_USERNAME = os.getenv("BOT_USERNAME")
 BOT_NAME = os.getenv("BOT_NAME")
-BOT_VERSION = "1.5"
-# Privacy Mode Configuration
+BOT_VERSION = "1.4"
+
+# Privacy Mode Configuration and codexbotz delete time
 PRIVACY_MODE = os.getenv("PRIVACY_MODE", "off").lower() == "on"
+AUTO_DELETE_TIME = int(os.getenv("AUTO_DELETE_TIME", 30)) # in minutes
 
 # Your Modiji Url Api Key Here
 MODIJI_API_KEY = os.getenv("MODIJI_API_KEY")
@@ -254,3 +256,4 @@ class Progress:
 **💭 Total:** {4}
 **⏰ Time Left:** {5}
 """
+                 
