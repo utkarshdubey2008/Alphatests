@@ -114,11 +114,9 @@ Hello {user_mention}! I'm your secure file sharing assistant.
 • Unique Download Links
 • Multiple File Types Support
 • Real-time Tracking
-• Force Subscribe
 
-📢 Join @Thealphabotz for updates!
-👨‍💻 Contact @adarsh2626 for support
-A Open Source Repo :- github.com/utkarshdubey2008/alphashare
+📢 Join @BotVerseRavi for updates!
+👨‍💻 Contact @Unknown_RK01 for support
 
 Use /help to see available commands!
 """
@@ -148,27 +146,22 @@ Use /help to see available commands!
 • `/batch` - Group multiple files into one link.  
 • Forward files & reply with `/batch`.  
 
-
-🛠 **Open Source:**  
-🔗 [GitHub](https://github.com/utkarshdubey2008/alphashare)  
-
-⚠️ **Need Help?** Contact [@adarsh2626](https://t.me/adarsh2626)  
+⚠️ **Need Help?** Contact [@Unknown_RK01](https://t.me/Unknown_RK01)  
 """
 
     ABOUT_TEXT = """
 ℹ️ **About {bot_name}**
 
 **Version:** `{version}`
-**Developer:** @adarsh2626
+**Developer:** @Unknown_RK01
 **Language:** Python
 **Framework:** Pyrogram
 
-📢 **Updates:** @Thealphabotz
-🛠 **Support:** @adarsh2626
+📢 **Updates:** @BotVerseRavi
+🛠 **Support:** @Unknown_RK01
 
 **Features:**
 • Secure File Sharing
-• Force Subscribe
 • Admin Controls
 • Real-time Stats
 • Multiple File Types
@@ -177,7 +170,7 @@ Use /help to see available commands!
 
 use /repo to know more info
 
-Made with ❤️ by @adarsh2626
+Made with ❤️ by @Unknown_RK01
 """
 
     FILE_TEXT = """
@@ -198,7 +191,7 @@ Made with ❤️ by @adarsh2626
 ⚠️ **Access Restricted!**
 
 Please join our channel to use this bot:
-Bot By @Thealphabotz
+Bot By @BotVerseRavi
 
 Click button below, then try again!
 """
