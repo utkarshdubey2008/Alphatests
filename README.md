@@ -41,9 +41,13 @@
 - **Advanced Statistics**: Track downloads, monitor storage usage, and view user engagement metrics.
 - **Professional UI**: Clean formatting, interactive inline buttons, and real-time progress bars.
 - **Security Features**: Admin verification, download monitoring, and file access control.
-- **Auto Delete Feature**: Helps prevent copyright issues!
-  - **Command**: /auto_del
-  - **Usage**: /auto_del 2 → Sets auto-delete timer to 2 minutes.
+
+- **Migrate databases without broken links or file errors.**
+
+⏱️ **Auto Delete Feature**: Helps prevent copyright issues!  
+  - **Config**: `AUTO_DELETE_TIME`  
+  - **Set In**: `config.py` or `.env`
+  
 - **Cleaner UI**: Smoother and more user-friendly experience.
 - **Bot Keep-Alive Mechanism**: Ensures 24/7 uptime for a seamless experience on Koyeb.
 - **URL Shortening**: Shorten any link using the `/short` command with Modiji URL API.
