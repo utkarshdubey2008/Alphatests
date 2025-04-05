@@ -4,7 +4,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-async def schedule_message_deletion(client: Client, file_uuid: str, chat_id: int, message_ids: list, delete_time: int):
+async def schedule_message_deletion(client: Client, chat_id: int, message_ids: list, delete_time: int):
     await asyncio.sleep(delete_time * 60)
     try:
         await client.delete_messages(chat_id, message_ids)
