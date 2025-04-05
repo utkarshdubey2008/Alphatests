@@ -129,7 +129,6 @@ Use /help to see available commands!
 • `/help` - Show this menu  
 • `/about` - Bot details  
 • `/short [url]` - Shorten a link (e.g., `/short example.com`)  
-/repo 
 
 👑 **Admin Commands:**  
 • `/upload` - Upload a file (reply to a file)  
@@ -168,7 +167,6 @@ Use /help to see available commands!
 • Enhanced Security
 • Automatic File Type Detection
 
-use /repo to know more info
 
 Made with ❤️ by @Unknown_RK01
 """
