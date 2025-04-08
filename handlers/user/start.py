@@ -16,7 +16,16 @@ button_manager = ButtonManager()
 
 async def decode_codex_link(encoded_string: str) -> tuple:
     try:
-        string_bytes = base64.b64decode(encoded_string.encode("ascii"))
+        padding_needed = len(encoded_string) % 4
+        if padding_needed:
+            encoded_string += '=' * (4 - padding_needed)
+
+        try:
+            string_bytes = base64.b64decode(encoded_string.encode("ascii"))
+        except Exception:
+            encoded_string += '=' * (4 - (len(encoded_string) % 4))
+            string_bytes = base64.b64decode(encoded_string.encode("ascii"))
+            
         decoded = string_bytes.decode("ascii")
         if decoded.startswith("get-"):
             parts = decoded.split("-")
@@ -261,6 +270,4 @@ async def start_command(client: Client, message: Message):
             ),
             reply_markup=buttons,
             protect_content=config.PRIVACY_MODE
-        )
-
-# @thealphabotz | Join @thealphabotz on Telegram
+                )                                           
