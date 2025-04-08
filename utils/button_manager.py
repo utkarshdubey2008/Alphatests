@@ -93,12 +93,12 @@ class ButtonManager:
         if config.CHANNEL_LINK:
             if config.CHANNEL_LINK_2:
                 buttons.append([
-                    InlineKeyboardButton("Channel 1 📢", url=config.CHANNEL_LINK),
-                    InlineKeyboardButton("Channel 2 📢", url=config.CHANNEL_LINK_2)
+                    InlineKeyboardButton("Updates 📢", url=config.CHANNEL_LINK),
+                    InlineKeyboardButton("Support 🆘", url=config.CHANNEL_LINK_2)
                 ])
             else:
                 buttons.append([
-                    InlineKeyboardButton("Channel 📢", url=config.CHANNEL_LINK)
+                    InlineKeyboardButton("Updates 📢", url=config.CHANNEL_LINK)
                 ])
                 
         buttons.append([
@@ -118,12 +118,12 @@ class ButtonManager:
         if config.CHANNEL_LINK:
             if config.CHANNEL_LINK_2:
                 buttons.append([
-                    InlineKeyboardButton("Channel 1 📢", url=config.CHANNEL_LINK),
-                    InlineKeyboardButton("Channel 2 📢", url=config.CHANNEL_LINK_2)
+                    InlineKeyboardButton("Updates 📢", url=config.CHANNEL_LINK),
+                    InlineKeyboardButton("Support 🆘", url=config.CHANNEL_LINK_2)
                 ])
             else:
                 buttons.append([
-                    InlineKeyboardButton("Channel 📢", url=config.CHANNEL_LINK)
+                    InlineKeyboardButton("Updates 📢", url=config.CHANNEL_LINK)
                 ])
         
         return InlineKeyboardMarkup(buttons)
@@ -139,12 +139,12 @@ class ButtonManager:
         if config.CHANNEL_LINK:
             if config.CHANNEL_LINK_2:
                 buttons.append([
-                    InlineKeyboardButton("Channel 1 📢", url=config.CHANNEL_LINK),
-                    InlineKeyboardButton("Channel 2 📢", url=config.CHANNEL_LINK_2)
+                    InlineKeyboardButton("Updates 📢", url=config.CHANNEL_LINK),
+                    InlineKeyboardButton("Support 🆘", url=config.CHANNEL_LINK_2)
                 ])
             else:
                 buttons.append([
-                    InlineKeyboardButton("Channel 📢", url=config.CHANNEL_LINK)
+                    InlineKeyboardButton("Updates 📢", url=config.CHANNEL_LINK)
                 ])
         
         return InlineKeyboardMarkup(buttons)
@@ -160,12 +160,12 @@ class ButtonManager:
         if config.CHANNEL_LINK:
             if config.CHANNEL_LINK_2:
                 buttons.append([
-                    InlineKeyboardButton("Channel 1 📢", url=config.CHANNEL_LINK),
-                    InlineKeyboardButton("Channel 2 📢", url=config.CHANNEL_LINK_2)
+                    InlineKeyboardButton("Updates 📢", url=config.CHANNEL_LINK),
+                    InlineKeyboardButton("Support 🆘", url=config.CHANNEL_LINK_2)
                 ])
             else:
                 buttons.append([
-                    InlineKeyboardButton("Channel 📢", url=config.CHANNEL_LINK)
+                    InlineKeyboardButton("Updates 📢", url=config.CHANNEL_LINK)
                 ])
         
         return InlineKeyboardMarkup(buttons)
@@ -181,12 +181,12 @@ class ButtonManager:
         if config.CHANNEL_LINK:
             if config.CHANNEL_LINK_2:
                 buttons.append([
-                    InlineKeyboardButton("Channel 1 📢", url=config.CHANNEL_LINK),
-                    InlineKeyboardButton("Channel 2 📢", url=config.CHANNEL_LINK_2)
+                    InlineKeyboardButton("Updates 📢", url=config.CHANNEL_LINK),
+                    InlineKeyboardButton("Support 🆘", url=config.CHANNEL_LINK_2)
                 ])
             else:
                 buttons.append([
-                    InlineKeyboardButton("Channel 📢", url=config.CHANNEL_LINK)
+                    InlineKeyboardButton("Updates 📢", url=config.CHANNEL_LINK)
                 ])
         
         return InlineKeyboardMarkup(buttons)
