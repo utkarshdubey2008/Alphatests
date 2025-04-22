@@ -63,7 +63,7 @@ async def short_url_command(client, message):
                 f"✅ **URL Shortened Successfully!**\n\n"
                 f"**Original URL:**\n`{url}`\n\n"
                 f"**Shortened URL:**\n`{shortened_url}`\n\n"
-                f"Powered by @Thealphabotz"
+                f"Powered by @Unknown_RK01"
             )
         else:
             await status_msg.edit_text(
