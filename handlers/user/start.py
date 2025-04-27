@@ -63,10 +63,16 @@ async def start_command(client: Client, message: Message):
                 force_sub_text += "• Join Channel 2\n"
                 
             force_sub_text += "\nJoin the channel(s) and try again."
+
+            # Add retry button with the original UUID
+            retry_button = InlineKeyboardButton(
+                "🔄 Retry",
+                callback_data=f"retry_start:{command}"  # Pass the UUID in callback data
+            )
             
             await message.reply_text(
                 force_sub_text,
-                reply_markup=button_manager.force_sub_button(),
+                reply_markup=InlineKeyboardMarkup([[retry_button]]),
                 protect_content=config.PRIVACY_MODE
             )
             return
@@ -270,4 +276,4 @@ async def start_command(client: Client, message: Message):
             ),
             reply_markup=buttons,
             protect_content=config.PRIVACY_MODE
-                )                                           
+                )
