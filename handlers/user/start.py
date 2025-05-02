@@ -273,6 +273,5 @@ async def start_command(client: Client, message: Message):
                 bot_name=config.BOT_NAME,
                 user_mention=user_method
             ),
-            reply_markup=buttons,
-            protect_content=config.PRIVACY_MODE
+            reply_markup=buttons
         )
