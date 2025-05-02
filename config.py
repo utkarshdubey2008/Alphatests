@@ -24,6 +24,8 @@ FORCE_SUB_CHANNEL_4 = int(os.getenv("FORCE_SUB_CHANNEL_4", 0))
 # Add a second channel link
 CHANNEL_LINK = os.getenv("CHANNEL_LINK") # First channel link
 CHANNEL_LINK_2 = os.getenv("CHANNEL_LINK_2", "") # Second channel link
+CHANNEL_LINK_3 = os.getenv("CHANNEL_LINK_3", "") 
+CHANNEL_LINK_4 = os.getenv("CHANNEL_LINK_4", "") 
 
 #start photo 
 START_PHOTO = os.getenv("START_PHOTO", "") #start photo for bot
