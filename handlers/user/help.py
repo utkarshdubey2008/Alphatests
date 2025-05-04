@@ -17,7 +17,7 @@ async def help_command(client: Client, message: Message):
         "• /upload - Upload a file (reply to file)\n"
         "• /auto_del - Set auto-delete time\n"
         "• /stats - View bot statistics\n"
-        "• /broadcast - Broadcast message to users\n"
+        "• /bcast - Broadcast message to users\n"
         "• /bcast_time - Broadcast time on or off to send broadcast in time.\n\n"
         "💡 **Auto-Delete Feature:**\n"
         "Files are automatically deleted after the set time.\n"
