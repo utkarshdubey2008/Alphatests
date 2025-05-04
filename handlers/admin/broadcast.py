@@ -6,7 +6,7 @@ from utils import is_admin
 db = Database()
 
 @Client.on_message(filters.command("broadcast") & filters.private)
-async def broadcast_handler(client, message: Message):
+async def broadcast_command(client, message: Message):
     if not await is_admin(message.from_user.id):
         return await message.reply("You are not authorized to use this command.")
 
@@ -34,6 +34,7 @@ async def broadcast_handler(client, message: Message):
                 "`/broadcast Your message here`\n"
                 "or reply to a media/message with `/broadcast`\n\n"
                 "**Add Button (Optional):**\n"
+                "Here Button Generator: https://alphasharebtngen.netlify.app/\n"
                 "`[Button Text](https://example.com)`"
             )
         content = message.text.split(None, 1)[1]
