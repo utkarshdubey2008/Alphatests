@@ -7,9 +7,10 @@ db = Database()
 
 @Client.on_message(filters.command("broadcast") & filters.private)
 async def broadcast_command(client, message: Message):
-    if not await is_admin(message):
-        return await message.reply("You are not authorized to use this command.")
-
+    if not is_admin(message):
+        await message.reply_text("⚠️ You are not authorized to use this command!")
+        return 
+        
     users = await db.get_all_users()
     text = None
     media = None
