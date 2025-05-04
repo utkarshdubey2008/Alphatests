@@ -10,8 +10,9 @@ db = Database()
 
 @Client.on_message(filters.command("stats"))
 async def stats_command(client: Client, message: Message):
-    if not await is_admin(message):
-        return await message.reply_text("⚠️ You are not authorized to view stats!")
+    if not is_admin(message):
+        await message.reply_text("⚠️ You are not authorized to use this command!")
+        return
 
     try:
         stats = await db.get_stats()
