@@ -17,7 +17,7 @@ async def toggle_bcast_time(client, message):
         return await message.reply("⚠️ You are not authorized to use this command!") 
     cmd = message.text.strip().split(maxsplit=1)
     if len(cmd) != 2 or cmd[1].lower() not in ["on", "off"]:
-        return await message.reply("Usage: `/bcast_time on` or `/bcast_time off`", parse_mode="markdown")
+        return await message.reply("Usage: `/bcast_time on` or `/bcast_time off`")
     
     broadcast_settings["bcast_time"] = (cmd[1].lower() == "on")
     return await message.reply(f"✅ Timed broadcast is now **{'enabled' if broadcast_settings['bcast_time'] else 'disabled'}**")
