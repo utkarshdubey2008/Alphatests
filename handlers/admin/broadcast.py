@@ -1,5 +1,4 @@
-import asyncio, re, time
-from datetime import timedelta
+import asyncio, re
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 from database import Database
@@ -7,31 +6,30 @@ from utils import is_admin
 
 db = Database()
 
-broadcast_settings = {"bcast_time": False}  # Default fallback
+broadcast_settings = {"bcast_time": False}
 
 async def load_broadcast_settings():
-    broadcast_settings["bcast_time"] = await db.get_setting("bcast_time", False)
+    broadcast_settings["bcast_time"] = await db.get_setting("bcast_time", False)
 
 async def save_broadcast_setting(key, value):
-    broadcast_settings[key] = value
-    await db.set_setting(key, value)
+    broadcast_settings[key] = value
+    await db.set_setting(key, value)
 
 @Client.on_message(filters.command("bcast_time") & filters.private)
 async def bcast_time(client, message):
-    if not is_admin(message):
-        return await message.reply("⚠️ You are not authorized to use this command!")
-    cmd = message.text.strip().split(maxsplit=1)
-    if len(cmd) != 2 or cmd[1].lower() not in ["on", "off"]:
-        return await message.reply("Usage: `/bcast_time on` or `/bcast_time off`")
-    status = cmd[1].lower() == "on"
-    await save_broadcast_setting("bcast_time", status)
-    return await message.reply(f"✅ Timed broadcast is now **{'enabled' if status else 'disabled'}**")
+    if not is_admin(message):
+        return await message.reply("⚠️ You are not authorized to use this command!")
+    cmd = message.text.strip().split(maxsplit=1)
+    if len(cmd) != 2 or cmd[1].lower() not in ["on", "off"]:
+        return await message.reply("Usage: `/bcast_time on` or `/bcast_time off`")
+    status = cmd[1].lower() == "on"
+    await save_broadcast_setting("bcast_time", status)
+    return await message.reply(f"✅ Timed broadcast is now **{'enabled' if status else 'disabled'}**")
 
 def chunk_buttons(buttons, row_size=4):
     return [buttons[i:i + row_size] for i in range(0, len(buttons), row_size)]
 
-def parse_buttons(text: str):
-    """Parse {Button}<url:"link"> pattern to InlineKeyboardButtons."""
+def parse_buttons(text):
     pattern = r'\{([^\}]+)\}<url:"(https?://[^"]+)">'
     matches = re.findall(pattern, text)
     buttons = [InlineKeyboardButton(text=btn.strip(), url=url.strip()) for btn, url in matches]
@@ -81,7 +79,6 @@ async def broadcast_command(client, message: Message):
     async def broadcast():
         sent, failed = 0, 0
         status_msg = await message.reply("📣 Broadcasting started...\nSending to users...")
-
         for i, user in enumerate(users):
             try:
                 if media:
@@ -103,11 +100,10 @@ async def broadcast_command(client, message: Message):
                     except:
                         pass
                 sent += 1
-            except Exception:
+            except:
                 failed += 1
             if i % 20 == 0:
                 await asyncio.sleep(1)
-
         await status_msg.edit(f"✅ Broadcast complete!\n\n**Sent:** {sent}\n**Failed:** {failed}")
 
     if delay_hours > 0:
