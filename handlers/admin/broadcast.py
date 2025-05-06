@@ -22,25 +22,26 @@ async def toggle_bcast_time(client, message):
     broadcast_settings["bcast_time"] = (cmd[1].lower() == "on")
     return await message.reply(f"✅ Timed broadcast is now **{'enabled' if broadcast_settings['bcast_time'] else 'disabled'}**")
 
+def chunk_buttons(buttons, row_size=4):
+    return [buttons[i:i + row_size] for i in range(0, len(buttons), row_size)]
+
 def parse_buttons(text: str):
-    """Parse [Text](URL) to InlineKeyboardButton."""
-    pattern = r'\[([^\[]+?)\]\((https?://[^\)]+)\)'
-    matches = re.findall(pattern, text)
-    buttons = [InlineKeyboardButton(text=t.strip(), url=u.strip()) for t, u in matches]
-    cleaned = re.sub(pattern, '', text).strip()
-    return cleaned, InlineKeyboardMarkup([buttons]) if buttons else None
+    """Parse {Button}<url:"link"> pattern to InlineKeyboardButtons."""
+    pattern = r'\{([^\}]+)\}<url:"(https?://[^"]+)">'
+    matches = re.findall(pattern, text)
+    buttons = [InlineKeyboardButton(text=btn.strip(), url=url.strip()) for btn, url in matches]
+    cleaned = re.sub(pattern, '', text).strip()
+    markup = InlineKeyboardMarkup(chunk_buttons(buttons)) if buttons else None
+    return cleaned, markup
 
 @Client.on_message(filters.command("bcast") & filters.private)
 async def broadcast_command(client, message: Message):
     if not is_admin(message):
         return await message.reply("⚠️ You are not authorized to use this command!")
+
     users = await db.get_all_users()
-    text = None
-    media = None
-    caption = None
-    buttons = None
-    delay_hours = 0
-    should_pin = False
+    text, media, caption, buttons = None, None, None, None
+    delay_hours, should_pin = 0, False
 
     if message.reply_to_message:
         media = (
@@ -56,16 +57,14 @@ async def broadcast_command(client, message: Message):
             return await message.reply(
                 "**Usage:** `/bcast Hello [interval] [pin]`\n"
                 "**Example:** `/bcast Hello 4h pin` = send every 4 hours and pin the message\n"
-                "or reply to a message with `/bcast` to send it\n"
+                "Or reply to a media/text with `/bcast`\n"
                 "[Generate buttons](https://alphasharebtngen.netlify.app)"
             )
         content = message.text.split(None, 1)[1]
         words = content.strip().split()
-        # Check for pin
         if "pin" in words:
             should_pin = True
             words.remove("pin")
-        # Check for interval
         match = re.search(r"(\d+)([hm])$", words[-1]) if words else None
         if match and broadcast_settings["bcast_time"]:
             value, unit = int(match.group(1)), match.group(2)
@@ -77,12 +76,13 @@ async def broadcast_command(client, message: Message):
     async def broadcast():
         sent, failed = 0, 0
         status_msg = await message.reply("📣 Broadcasting started...\nSending to users...")
-        for user in users:
+
+        for i, user in enumerate(users):
             try:
                 if media:
-                    msg = await client.send_media_group(
+                    msg = await client.send_photo(
                         chat_id=user["user_id"],
-                        media=[media],
+                        photo=media.file_id,
                         caption=caption,
                         reply_markup=buttons
                     )
@@ -94,13 +94,15 @@ async def broadcast_command(client, message: Message):
                     )
                 if should_pin:
                     try:
-                        await client.pin_chat_message(user["user_id"], msg.id)
-                    except Exception:
-                        pass  # skip pin error
+                        await client.pin_chat_message(user["user_id"], msg.id, disable_notification=True)
+                    except:
+                        pass
                 sent += 1
             except Exception:
                 failed += 1
-            await asyncio.sleep(0.05)
+            if i % 20 == 0:
+                await asyncio.sleep(1)
+
         await status_msg.edit(f"✅ Broadcast complete!\n\n**Sent:** {sent}\n**Failed:** {failed}")
 
     if delay_hours > 0:
