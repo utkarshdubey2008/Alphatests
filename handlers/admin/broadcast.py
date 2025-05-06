@@ -23,7 +23,7 @@ async def toggle_bcast_time(client, message):
     return await message.reply(f"✅ Timed broadcast is now **{'enabled' if broadcast_settings['bcast_time'] else 'disabled'}**")
 
 def chunk_buttons(buttons, row_size=4):
-    return [buttons[i:i + row_size] for i in range(0, len(buttons), row_size)]
+    return [buttons[i:i + row_size] for i in range(0, len(buttons), row_size)]
 
 def parse_buttons(text: str):
     """Parse {Button}<url:"link"> pattern to InlineKeyboardButtons."""
